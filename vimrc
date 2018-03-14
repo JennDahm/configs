@@ -36,6 +36,7 @@ set softtabstop=8  " 8 spaces per tab when typing.
 "set shiftwidth=8  " Number of spaces for autoindention; =tabstop by default
 set noexpandtab    " I can't expand my tabs into spaces.
 set textwidth=80   " 80 characters per line.
+set nowrap         " Don't wrap lines if the window is too narrow.
 
 " Set a useful status line. Examples:
 " |src/main.c [+][c][Buffer 1]   ---   20, 30/140    25%|
@@ -48,10 +49,12 @@ set statusline+=%{buflisted(bufname('%'))?'[Buffer\ '.bufnr('%').']':''}
 
 set statusline+=%=      " Left/Right Split
 
-set statusline+=%-18(   " Begin left-aligned group (18 characters minimum)
-set statusline+=%3v,\ %l/%L " (Visual) Column, Line Number, Total Lines
-set statusline+=%)      " End group
+" Left-aligned group (18 chars minimum): (Visual) Column, Line Number, Total Lines
+set statusline+=%-18(%3v,\ %l/%L%)
 set statusline+=\ %P    " Percentage through file
+
+" Ensure that the status line is always shown:
+set laststatus=2
 
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 " Formatting:

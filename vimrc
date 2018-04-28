@@ -16,7 +16,8 @@ set hidden      " Allow modified buffers to be swapped out without discarding ch
 
 set number          " Absolute line numbers. With relativenumber, only shows the current line number.
 set relativenumber  " Line numbers relative to the current line (useful for relative motion)
-syntax enable
+syntax enable       " Enable filetype-specific syntax highlighting.
+filetype plugin on  " Run filetype-specific plugins from ~/.vim/ftplugin/.
 " TODO: Add a color scheme?
 
 set cursorline  " Highlight the current line.
@@ -38,14 +39,46 @@ set noexpandtab    " I can't expand my tabs into spaces.
 set textwidth=80   " 80 characters per line.
 set nowrap         " Don't wrap lines if the window is too narrow.
 
-
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 " Formatting:
 " - Auto-indentation
 " - Format options
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-set cindent  " This works great for C files. See also: indentexpr
-set cino=:0  " Indentation control: don't indent case labels.
+" By default, just keep the current line's indentation.
+" This works for most languages.
+set autoindent
+
+" Set some default format options: (help fo-table)
+" - t : Auto-wrap "text"
+" - c : Auto-wrap comments
+" - q : Format comments properly when using `gq...`
+" - r : Automatically insert comment leaders in insert mode.
+" - o : Automatically insert comment leaders after o and O commands
+" - j : Remove comment leader when joining lines (if sane)
+" - l : Don't break existing long lines.
+" - a : Automatic reformatting of paragraphs
+" Alternative: set formatprg for an external formatting application
+set formatoptions=cqrojl
+
+" For textual files, additionally add the t option.
+" The 'a' option is a nice idea, but it actively gets in the way of me writing
+" lists, which I frequently do in plaintext. I can always manually reformat a
+" paragraph using `gqip`.
+autocmd Filetype text      setlocal formatoptions+=t
+autocmd Filetype plaintex  setlocal formatoptions+=t
+autocmd Filetype gitcommit setlocal formatoptions+=t textwidth=70
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+" C Indentation Style
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+" C files work best when we use these options, but they screw up other
+" languages. To fix that, hide them behind an autocmd that triggers when we open
+" a C file.
+"
+" See also: indentexpr
+autocmd Filetype c  setlocal cindent cino=:0
+" Indentation control: don't indent case labels.
+"
 " cino provides fine-grained control over indentation. Useful examples:
 " LN (help cino-L) - Control alignment of jump labels
 " :N (help cino-:) - Control alignment of case labels in switch blocks
@@ -57,15 +90,6 @@ set cino=:0  " Indentation control: don't indent case labels.
 " hN (help cino-g) - Control alignment after C++ scope declarations
 " +N (help cino-+) - Control alignment of line continuations
 " (N (help cino-() - Control alignment of line continuations within parenthesis
-
-" Sets some format options: (help fo-table)
-" - t : Auto-wrap "text"
-" - c : Auto-wrap comments
-" - r : Automatically insert comment leaders in insert mode.
-" - o : Automatically insert comment leaders after o and O commands
-" - j : Remove comment leader when joining lines (if sane)
-" Alternative: set formatprg for an external formatting application
-set formatoptions=tcroj
 
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 " Status Line

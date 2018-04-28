@@ -38,23 +38,6 @@ set noexpandtab    " I can't expand my tabs into spaces.
 set textwidth=80   " 80 characters per line.
 set nowrap         " Don't wrap lines if the window is too narrow.
 
-" Set a useful status line. Examples:
-" |src/main.c [+][c][Buffer 1]   ---   20, 30/140    25%|
-" |options.text [-][help]   ---   64, 7418/9120    81%|
-set statusline =%f\     " Path to file from CWD (and a space)
-set statusline+=%m      " Modified/Non-modifiable?
-set statusline+=%y      " File type (for help files, this is [help])
-" Show the buffer number, but only if the buffer is listed:
-set statusline+=%{buflisted(bufname('%'))?'[Buffer\ '.bufnr('%').']':''}
-
-set statusline+=%=      " Left/Right Split
-
-" Left-aligned group (18 chars minimum): (Visual) Column, Line Number, Total Lines
-set statusline+=%-18(%3v,\ %l/%L%)
-set statusline+=\ %P    " Percentage through file
-
-" Ensure that the status line is always shown:
-set laststatus=2
 
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 " Formatting:
@@ -84,6 +67,27 @@ set cino=:0  " Indentation control: don't indent case labels.
 " Alternative: set formatprg for an external formatting application
 set formatoptions=tcroj
 
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+" Status Line
+"
+" Examples:
+" |src/main.c [+][c][Buffer 1]   ---   20, 30/140     25%|
+" |options.text [-][help]        ---   64, 7418/9120  81%|
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+set statusline =%f\  " Path to file from CWD (and a space)
+set statusline+=%m   " Modified/Non-modifiable?
+set statusline+=%y   " File type (for help files, this is [help])
+" Show the buffer number, but only if the buffer is listed:
+set statusline+=%{buflisted(bufname('%'))?'[Buffer\ '.bufnr('%').']':''}
+
+set statusline+=%=   " Left/Right Split
+
+" Left-aligned group (18 chars minimum): (Visual) Column, Line Number, Total Lines
+set statusline+=%-18(%3v,\ %l/%L%)
+set statusline+=\ %P " Percentage through file
+
+" Ensure that the status line is always shown:
+set laststatus=2
 
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 " Commands:
